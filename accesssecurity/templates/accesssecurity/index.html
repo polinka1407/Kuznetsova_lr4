@@ -1,41 +1,42 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!--объявляет тип документа -->
 <html>
 <head>
-    <title>Авторизация - Контейнер безопасности</title>
-    <style>
+    <title>Авторизация - Контейнер безопасности</title> <!--#заголовок страницы -->
+    <style>  
+          /* Блок встроенных стилей CSS. Описывает внешний вид всех элементов страницы.*/
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif; /* Шрифт: Arial или любой без засечек */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  /* Градиентный фон: от сине-фиолетового к пурпурному */
             height: 100vh;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
+        } 
         .login-container {
-            background: white;
+            background: white; /* Белый фон контейнера */
             padding: 40px;
-            border-radius: 10px;
+            border-radius: 10px;    /* Закругление углов */
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             width: 350px;
-        }
+        } 
         h2 {
-            text-align: center;
+            text-align: center;  /* Текст по центру */
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 30px;   /* Отступ снизу 30px */
         }
         input {
-            width: 100%;
+            width: 100%; 
             padding: 12px;
-            margin: 10px 0;
+            margin: 10px 0;  /* Отступы: сверху/снизу 10px */
             border: 1px solid #ddd;
             border-radius: 5px;
             box-sizing: border-box;
         }
         button {
-            width: 100%;
+            width: 100%; /* Кнопка на всю ширину */
             padding: 12px;
-            background: #667eea;
+            background: #667eea; /* Фон кнопки (сине-фиолетовый) */
             color: white;
             border: none;
             border-radius: 5px;
@@ -43,24 +44,30 @@
             font-size: 16px;
         }
         button:hover {
-            background: #5a67d8;
+            background: #5a67d8;   /* Более тёмный оттенок при наведении */
         }
         .error {
-            color: red;
-            text-align: center;
+            color: red;   /* Красный цвет текста ошибки */
+            text-align: center; /* По центру */
             margin-top: 10px;
         }
     </style>
 </head>
 <body>
+      <!-- Тело документа: видимая часть страницы, которая показывается пользователю -->
     <div class="login-container">
+        <!-- Блок-контейнер с классом login-container. Используется для группировки и стилизации всех элементов формы.
+        class - атрибут для CSS-классов, позволяет применить стили, описанные выше -->
         <h2>🔐 Контейнер безопасности</h2>
+        <!-- Заголовок второго уровня  -->
         <h3>Защита от НСД через сторонние сервисы</h3>
+         <!-- Заголовок 3 уровня  -->
         <form method="post">
             {% csrf_token %}
+               <!-- Специальный тег шаблонизатора Django.-->
             <input type="text" name="login" placeholder="Логин" required>
             <input type="password" name="password" placeholder="Пароль" required>
-            <button type="submit">Войти</button>
+            <button type="submit">Войти</button>  <!-- Кнопка отправки формы. -->
         </form>
         {% if error %}
             <div class="error">{{ error }}</div>
