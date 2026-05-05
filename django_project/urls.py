@@ -14,9 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.db.models import Index
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from tasks import views # Импорт представлений из приложения tasks.
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('accesssecurity.urls')),
+    path("", views.index), # Добавление маршрута для корневого URL-адреса, который будет обрабатываться функцией index из представлений приложения tasks. (для работы необходимо создать функцию index в файле views.py)
 ]

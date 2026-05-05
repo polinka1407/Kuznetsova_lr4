@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tasks.apps.TasksConfig',  # Подключение приложения tasks. Затем перезапуск сервера, убеждаемся в том, что http порт открыт.
+    'accesssecurity', 
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты проверки безопасности</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px 50px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .stat-card h3 {
+            font-size: 48px;
+            margin: 0;
+        }
+
+        .stat-card p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .section {
+            margin: 40px 0;
+        }
+
+        .section h2 {
+            color: #333;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tr:hover {
+            background: #f0f0f0;
+        }
+
+        .graph-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .graph-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .graph-card h3 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .graph-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 20px 10px;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .timestamp {
+            text-align: center;
+            color: #666;
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .graph-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ Результаты работы контейнера безопасности</h1>
+            <p>Защита от несанкционированного доступа через сторонние сервисы</p>
+        </div>
+
+        <div class="content">
+            <!-- Статистика -->
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>✅ {{ stats.ALLOW|default:"0" }}</h3>
+                    <p>Разрешено</p>
+                </div>
+                <div class="stat-card">
+                    <h3>🚫 {{ stats.BLOCK|default:"0" }}</h3>
+                    <p>Заблокировано</p>
+                </div>
+            </div>
+
+            <!-- Таблица результатов -->
+            <div class="section">
+                <h2>📊 Детальная таблица результатов</h2>
+                {{ table_html|safe }}
+            </div>
+
+            <!-- Графики -->
+            <div class="section">
+                <h2>📈 Визуализация данных</h2>
+                <div class="graph-grid">
+                    <div class="graph-card">
+                        <h3>📊 Запросы к сторонним сервисам</h3>
+                        <img src="data:image/png;base64,{{ graphs.requests_chart }}" alt="Запросы к сервисам">
+                    </div>
+
+                    <div class="graph-card">
+                        <h3>⚠️ Уровень риска НСД</h3>
+                        <img src="data:image/png;base64,{{ graphs.risk_chart }}" alt="Уровень риска">
+                    </div>
+
+                    <div class="graph-card">
+                        <h3>🥧 Распределение решений</h3>
+                        <img src="data:image/png;base64,{{ graphs.pie_chart }}" alt="Распределение решений">
+                    </div>
+
+                    <div class="graph-card">
+                        <h3>📊 Риск по сервисам</h3>
+                        <img src="data:image/png;base64,{{ graphs.risk_bars }}" alt="Риск по сервисам">
+                    </div>
+
+                    <div class="graph-card full-width">
+                        <h3>🔍 Суммарные факторы риска</h3>
+                        <img src="data:image/png;base64,{{ graphs.risk_factors_sum }}" alt="Факторы риска">
+                    </div>
+
+                    <div class="graph-card full-width">
+                        <h3>📈 Сравнение запросов и уровня риска</h3>
+                        <img src="data:image/png;base64,{{ graphs.comparison_chart }}" alt="Сравнение запросов и риска">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопка новой проверки -->
+            <div style="text-align: center;">
+                <a href="/" class="btn">🔄 Новая проверка</a>
+            </div>
+
+            <div class="timestamp">
+                📅 Дата и время проверки: {{ timestamp }}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
